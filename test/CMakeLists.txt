@@ -13,16 +13,13 @@ if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/split_test_helper.h)
   endforeach()
 endif()
 
-# check if we have a Fortran compiler
-include("../cmake/language_support.cmake")
-
-workaround_9220(Fortran EIGEN_Fortran_COMPILER_WORKS)
-
-if(EIGEN_Fortran_COMPILER_WORKS)
-  enable_language(Fortran OPTIONAL)
-  if(NOT CMAKE_Fortran_COMPILER)
-    set(EIGEN_Fortran_COMPILER_WORKS OFF)
-  endif()
+include(CheckLanguage)
+check_language(Fortran)
+if(CMAKE_Fortran_COMPILER)
+  enable_language(Fortran)
+  set(EIGEN_Fortran_COMPILER_WORKS ON)
+else()
+  set(EIGEN_Fortran_COMPILER_WORKS OFF)
 endif()
 
 if(NOT EIGEN_Fortran_COMPILER_WORKS)
